@@ -23,7 +23,7 @@ jobs:
         run: |
           $version = node -p "require('./package.json').version"
           if ("v$version" -ne "${{ github.ref_name }}") { throw "Tag v$version is required for this build." }
-      - run: npm run desktop:package
+      - run: npm run desktop:package -- --publish never
       - name: Publish GitHub Release and updater assets
         uses: softprops/action-gh-release@v2
         with:

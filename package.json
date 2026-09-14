@@ -1,6 +1,6 @@
 {
   "name": "sharco-guard",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Local-first personal device security and threat reputation client.",
   "author": "Alex Devine Sharber",
   "private": true,
