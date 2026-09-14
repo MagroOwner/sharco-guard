@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanDirectory } from './engine/scanner.mjs';
+import { POST as reputationLookup } from './api/v1/reputation.js';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const contentTypes = { '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml' };
@@ -14,6 +15,21 @@ function reply(response, status, body, type = 'application/json; charset=utf-8')
 
 createServer(async (request, response) => {
   const url = new URL(request.url, 'http://localhost');
+  if (request.method === 'POST' && url.pathname === '/api/v1/reputation') {
+    let raw = '';
+    for await (const chunk of request) raw += chunk;
+    const apiResponse = await reputationLookup(new Request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': request.headers['content-type'] ?? 'application/json' },
+      body: raw
+    }));
+    response.writeHead(apiResponse.status, {
+      'Content-Type': apiResponse.headers.get('content-type') ?? 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store'
+    });
+    response.end(Buffer.from(await apiResponse.arrayBuffer()));
+    return;
+  }
   if (request.method === 'POST' && url.pathname === '/api/scan') {
     let raw = '';
     for await (const chunk of request) raw += chunk;
