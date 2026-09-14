@@ -1,15 +1,30 @@
 {
   "name": "sharco-guard",
   "version": "0.1.0",
+  "description": "Local-first personal device security and threat reputation client.",
+  "author": "Alex Devine Sharber",
   "private": true,
   "type": "module",
+  "main": "electron/main.cjs",
   "engines": { "node": ">=20" },
   "scripts": {
     "start": "node server.mjs",
     "scan": "node engine/scanner.mjs",
-    "seed:eicar": "node scripts/seed-eicar.mjs"
+    "seed:eicar": "node scripts/seed-eicar.mjs",
+    "desktop": "electron .",
+    "desktop:package": "electron-builder --win nsis"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2"
+  },
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.sharco.guard",
+    "productName": "Sharco Guard",
+    "files": ["electron/**/*", "desktop/**/*", "engine/**/*", "package.json"],
+    "win": { "target": "nsis" }
   }
 }

@@ -13,6 +13,10 @@ Open `http://localhost:4173`, then enter a folder on the local computer. The sca
 
 This is an early scanner prototype, not production antivirus software. A production release needs a signed native agent per operating system, real-time file-system monitoring, a verified threat-intelligence feed, safe quarantine/restore, audit logging, and independent security review.
 
+## Desktop app
+
+Run the Windows desktop prototype with `npm run desktop`. Select a folder, then it reads and hashes files locally before sending SHA-256 values to the reputation API. Update the default Vercel API address from **Threat API settings** if your deployment uses a different domain. Build a Windows installer with `npm run desktop:package`.
+
 ## Threat database
 
 The agent calculates a SHA-256 hash locally and sends only that hash to `POST /api/v1/reputation`. The API returns a confirmed reputation match when one exists; it never accepts or executes files.
