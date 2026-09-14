@@ -6,6 +6,10 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "start": "node server.mjs",
-    "scan": "node engine/scanner.mjs"
+    "scan": "node engine/scanner.mjs",
+    "seed:eicar": "node scripts/seed-eicar.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2"
   }
 }
