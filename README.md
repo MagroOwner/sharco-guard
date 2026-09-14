@@ -17,6 +17,8 @@ This is an early scanner prototype, not production antivirus software. A product
 
 Run the Windows desktop prototype with `npm run desktop`. Select a folder, then it reads and hashes files locally before sending SHA-256 values to the reputation API. Update the default Vercel API address from **Threat API settings** if your deployment uses a different domain. Build a Windows installer with `npm run desktop:package`.
 
+Desktop builds check GitHub Releases for updates automatically. To publish a release, increment `version` in `package.json`, run `npm run desktop:package`, then attach the generated installer, `.blockmap`, and `latest.yml` files from `dist/` to a GitHub Release tagged with the same version. The installed app will download the update and offer a restart-to-install action.
+
 ## Threat database
 
 The agent calculates a SHA-256 hash locally and sends only that hash to `POST /api/v1/reputation`. The API returns a confirmed reputation match when one exists; it never accepts or executes files.

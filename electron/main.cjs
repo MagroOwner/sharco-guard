@@ -1,4 +1,5 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const { readFile, writeFile } = require('node:fs/promises');
 const { join } = require('node:path');
 
@@ -14,7 +15,19 @@ async function createWindow() {
     webPreferences: { preload: join(__dirname, 'preload.cjs'), contextIsolation: true, sandbox: true, nodeIntegration: false } });
   await window.loadFile(join(__dirname, '..', 'desktop', 'index.html'));
 }
-app.whenReady().then(() => { createWindow(); app.on('activate', () => { if (!BrowserWindow.getAllWindows().length) createWindow(); }); });
+function sendUpdate(event, detail = {}) { window?.webContents.send('update:status', { event, ...detail }); }
+function configureUpdates() {
+  if (!app.isPackaged) return;
+  autoUpdater.autoDownload = false;
+  autoUpdater.on('checking-for-update', () => sendUpdate('checking'));
+  autoUpdater.on('update-available', info => sendUpdate('available', { version: info.version }));
+  autoUpdater.on('update-not-available', () => sendUpdate('current'));
+  autoUpdater.on('download-progress', progress => sendUpdate('downloading', { percent: progress.percent }));
+  autoUpdater.on('update-downloaded', info => sendUpdate('downloaded', { version: info.version }));
+  autoUpdater.on('error', error => sendUpdate('error', { message: error.message }));
+  autoUpdater.checkForUpdates().catch(() => {});
+}
+app.whenReady().then(() => { createWindow().then(configureUpdates); app.on('activate', () => { if (!BrowserWindow.getAllWindows().length) createWindow(); }); });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
 
 ipcMain.handle('settings:get', getSettings);
@@ -32,3 +45,6 @@ ipcMain.handle('scan:start', async (_, target) => {
   const { endpoint } = await getSettings();
   return reputationScan(target, endpoint, progress => window?.webContents.send('scan:progress', progress));
 });
+ipcMain.handle('updates:check', async () => { if (!app.isPackaged) return { supported: false }; await autoUpdater.checkForUpdates(); return { supported: true }; });
+ipcMain.handle('updates:download', () => autoUpdater.downloadUpdate());
+ipcMain.handle('updates:install', () => autoUpdater.quitAndInstall());

@@ -1,6 +1,6 @@
 {
   "name": "sharco-guard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Local-first personal device security and threat reputation client.",
   "author": "Alex Devine Sharber",
   "private": true,
@@ -19,12 +19,15 @@
   },
   "devDependencies": {
     "electron": "^39.2.7",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^26.0.12",
+    "electron-updater": "^6.6.2"
   },
   "build": {
     "appId": "com.sharco.guard",
     "productName": "Sharco Guard",
     "files": ["electron/**/*", "desktop/**/*", "engine/**/*", "package.json"],
-    "win": { "target": "nsis" }
+    "win": { "target": "nsis" },
+    "nsis": { "oneClick": true, "perMachine": false },
+    "publish": [{ "provider": "github", "owner": "MagroOwner", "repo": "sharco-guard", "releaseType": "release" }]
   }
 }
