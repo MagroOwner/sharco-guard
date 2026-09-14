@@ -9,7 +9,7 @@ const contentTypes = { '.css': 'text/css; charset=utf-8', '.html': 'text/html; c
 
 function reply(response, status, body, type = 'application/json; charset=utf-8') {
   response.writeHead(status, { 'Content-Type': type, 'Cache-Control': 'no-store' });
-  response.end(typeof body === 'string' ? body : JSON.stringify(body));
+  response.end(Buffer.isBuffer(body) || typeof body === 'string' ? body : JSON.stringify(body));
 }
 
 createServer(async (request, response) => {
