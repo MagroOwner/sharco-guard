@@ -17,7 +17,7 @@ This is an early scanner prototype, not production antivirus software. A product
 
 The agent calculates a SHA-256 hash locally and sends only that hash to `POST /api/v1/reputation`. The API returns a confirmed reputation match when one exists; it never accepts or executes files.
 
-Run [`db/schema.sql`](db/schema.sql) in the Neon SQL Editor for `sharco-guard-threat-db`. The Vercel integration must provide the `SHARCO_GUARD_DATABASE_URL` environment variable to Production and Preview. The schema includes a harmless EICAR test entry; use `npm run seed:eicar` to print the corresponding SHA-256 value for an API test.
+Run [`db/schema.sql`](db/schema.sql) in the Neon SQL Editor for `sharco-guard-threat-db`. The Vercel integration must provide the `SHARCO_GUARD_DATABASE_DATABASE_URL` environment variable to Production and Preview. The schema includes a harmless EICAR test entry; use `npm run seed:eicar` to print the corresponding SHA-256 value for an API test.
 
 ## Vercel dashboard deployment
 

@@ -3,7 +3,7 @@ import { neon } from '@neondatabase/serverless';
 const HASH = /^[a-f0-9]{64}$/;
 
 function database() {
-  const url = process.env.SHARCO_GUARD_DATABASE_URL;
+  const url = process.env.SHARCO_GUARD_DATABASE_DATABASE_URL;
   if (!url) throw new Error('The threat database is not configured.');
   return neon(url);
 }
