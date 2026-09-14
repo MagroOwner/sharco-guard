@@ -1,6 +1,6 @@
 {
   "name": "sharco-guard",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Local-first personal device security and threat reputation client.",
   "author": "Alex Devine Sharber",
   "private": true,
@@ -15,12 +15,12 @@
     "desktop:package": "electron-builder --win nsis"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.2"
+    "@neondatabase/serverless": "^1.0.2",
+    "electron-updater": "^6.6.2"
   },
   "devDependencies": {
     "electron": "^39.2.7",
-    "electron-builder": "^26.0.12",
-    "electron-updater": "^6.6.2"
+    "electron-builder": "^26.0.12"
   },
   "build": {
     "appId": "com.sharco.guard",
